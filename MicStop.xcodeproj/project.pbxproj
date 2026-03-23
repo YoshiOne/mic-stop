@@ -1,0 +1,411 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A00100010000000000000001 /* MicStopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000001 /* MicStopApp.swift */; };
+		A00100010000000000000002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000002 /* AppState.swift */; };
+		A00100010000000000000003 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000003 /* Models.swift */; };
+		A00100010000000000000004 /* DefaultsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000004 /* DefaultsStore.swift */; };
+		A00100010000000000000005 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000005 /* HotkeyManager.swift */; };
+		A00100010000000000000006 /* AudioHardware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000006 /* AudioHardware.swift */; };
+		A00100010000000000000007 /* MicrophoneMuteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000007 /* MicrophoneMuteController.swift */; };
+		A00100010000000000000008 /* AudioDeviceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000008 /* AudioDeviceObserver.swift */; };
+		A00100010000000000000009 /* LaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000009 /* LaunchAtLoginManager.swift */; };
+		A0010001000000000000000A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020001000000000000000A /* SettingsView.swift */; };
+		A0010001000000000000000D /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000012 /* StatusBarController.swift */; };
+		A0010001000000000000000E /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000013 /* SettingsWindowController.swift */; };
+		A0010001000000000000000B /* AppShortcutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020001000000000000000B /* AppShortcutTests.swift */; };
+		A0010001000000000000000C /* MicrophoneMuteControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020001000000000000000C /* MicrophoneMuteControllerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A00200010000000000000001 /* MicStopApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MicStopApp.swift; path = Sources/MicStopApp/MicStopApp.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000002 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = Sources/MicStopApp/AppState.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000003 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Models.swift; path = Sources/MicStopApp/Models.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000004 /* DefaultsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsStore.swift; path = Sources/MicStopApp/DefaultsStore.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000005 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HotkeyManager.swift; path = Sources/MicStopApp/HotkeyManager.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000006 /* AudioHardware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioHardware.swift; path = Sources/MicStopApp/AudioHardware.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000007 /* MicrophoneMuteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MicrophoneMuteController.swift; path = Sources/MicStopApp/MicrophoneMuteController.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000008 /* AudioDeviceObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioDeviceObserver.swift; path = Sources/MicStopApp/AudioDeviceObserver.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000009 /* LaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LaunchAtLoginManager.swift; path = Sources/MicStopApp/LaunchAtLoginManager.swift; sourceTree = SOURCE_ROOT; };
+		A0020001000000000000000A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = Sources/MicStopApp/SettingsView.swift; sourceTree = SOURCE_ROOT; };
+		A0020001000000000000000B /* AppShortcutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppShortcutTests.swift; path = Tests/MicStopAppTests/AppShortcutTests.swift; sourceTree = SOURCE_ROOT; };
+		A0020001000000000000000C /* MicrophoneMuteControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MicrophoneMuteControllerTests.swift; path = Tests/MicStopAppTests/MicrophoneMuteControllerTests.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000012 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatusBarController.swift; path = Sources/MicStopApp/StatusBarController.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000013 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsWindowController.swift; path = Sources/MicStopApp/SettingsWindowController.swift; sourceTree = SOURCE_ROOT; };
+		A0020001000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = MicStop/Info.plist; sourceTree = SOURCE_ROOT; };
+		A0020001000000000000000E /* MicStop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MicStop.entitlements; path = MicStop/MicStop.entitlements; sourceTree = SOURCE_ROOT; };
+		A0020001000000000000000F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = MicStopTests/Info.plist; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000010 /* MicStop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MicStop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A00200010000000000000011 /* MicStopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MicStopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A00300010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00300010000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A00400010000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A00400010000000000000002 /* MicStop */,
+				A00400010000000000000003 /* MicStopTests */,
+				A00400010000000000000004 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A00400010000000000000002 /* MicStop */ = {
+			isa = PBXGroup;
+			children = (
+				A00200010000000000000001 /* MicStopApp.swift */,
+				A00200010000000000000002 /* AppState.swift */,
+				A00200010000000000000003 /* Models.swift */,
+				A00200010000000000000004 /* DefaultsStore.swift */,
+				A00200010000000000000005 /* HotkeyManager.swift */,
+				A00200010000000000000006 /* AudioHardware.swift */,
+				A00200010000000000000007 /* MicrophoneMuteController.swift */,
+					A00200010000000000000008 /* AudioDeviceObserver.swift */,
+					A00200010000000000000009 /* LaunchAtLoginManager.swift */,
+					A0020001000000000000000A /* SettingsView.swift */,
+					A00200010000000000000012 /* StatusBarController.swift */,
+					A00200010000000000000013 /* SettingsWindowController.swift */,
+					A0020001000000000000000D /* Info.plist */,
+					A0020001000000000000000E /* MicStop.entitlements */,
+			);
+			path = MicStop;
+			sourceTree = "<group>";
+		};
+		A00400010000000000000003 /* MicStopTests */ = {
+			isa = PBXGroup;
+			children = (
+				A0020001000000000000000B /* AppShortcutTests.swift */,
+				A0020001000000000000000C /* MicrophoneMuteControllerTests.swift */,
+				A0020001000000000000000F /* Info.plist */,
+			);
+			path = MicStopTests;
+			sourceTree = "<group>";
+		};
+		A00400010000000000000004 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A00200010000000000000010 /* MicStop.app */,
+				A00200010000000000000011 /* MicStopTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A00500010000000000000001 /* MicStop */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00800010000000000000001 /* Build configuration list for PBXNativeTarget "MicStop" */;
+			buildPhases = (
+				A00600010000000000000001 /* Sources */,
+				A00300010000000000000001 /* Frameworks */,
+				A00700010000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MicStop;
+			productName = MicStop;
+			productReference = A00200010000000000000010 /* MicStop.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A00500010000000000000002 /* MicStopTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00800010000000000000002 /* Build configuration list for PBXNativeTarget "MicStopTests" */;
+			buildPhases = (
+				A00600010000000000000002 /* Sources */,
+				A00300010000000000000002 /* Frameworks */,
+				A00700010000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A00A00010000000000000001 /* PBXTargetDependency */,
+			);
+			name = MicStopTests;
+			productName = MicStopTests;
+			productReference = A00200010000000000000011 /* MicStopTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A00900010000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A00500010000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					A00500010000000000000002 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = A00500010000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = A00800010000000000000003 /* Build configuration list for PBXProject "MicStop" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A00400010000000000000001;
+			productRefGroup = A00400010000000000000004 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A00500010000000000000001 /* MicStop */,
+				A00500010000000000000002 /* MicStopTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A00700010000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00700010000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A00600010000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00100010000000000000001 /* MicStopApp.swift in Sources */,
+				A00100010000000000000002 /* AppState.swift in Sources */,
+				A00100010000000000000003 /* Models.swift in Sources */,
+				A00100010000000000000004 /* DefaultsStore.swift in Sources */,
+				A00100010000000000000005 /* HotkeyManager.swift in Sources */,
+				A00100010000000000000006 /* AudioHardware.swift in Sources */,
+				A00100010000000000000007 /* MicrophoneMuteController.swift in Sources */,
+					A00100010000000000000008 /* AudioDeviceObserver.swift in Sources */,
+					A00100010000000000000009 /* LaunchAtLoginManager.swift in Sources */,
+					A0010001000000000000000A /* SettingsView.swift in Sources */,
+					A0010001000000000000000D /* StatusBarController.swift in Sources */,
+					A0010001000000000000000E /* SettingsWindowController.swift in Sources */,
+				);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A00600010000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0010001000000000000000B /* AppShortcutTests.swift in Sources */,
+				A0010001000000000000000C /* MicrophoneMuteControllerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A00A00010000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A00500010000000000000001 /* MicStop */;
+			targetProxy = A00B00010000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		A00B00010000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00900010000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A00500010000000000000001;
+			remoteInfo = MicStop;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+		A00C00010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = MicStop/MicStop.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MicStop/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.micstop;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A00C00010000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = MicStop/MicStop.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MicStop/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.micstop;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A00C00010000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MicStopTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@loader_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.micstop.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MicStop.app/Contents/MacOS/MicStop";
+			};
+			name = Debug;
+		};
+		A00C00010000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MicStopTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/../Frameworks",
+					"@loader_path/../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.micstop.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MicStop.app/Contents/MacOS/MicStop";
+			};
+			name = Release;
+		};
+		A00C00010000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A00C00010000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A00800010000000000000001 /* Build configuration list for PBXNativeTarget "MicStop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00C00010000000000000001 /* Debug */,
+				A00C00010000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00800010000000000000002 /* Build configuration list for PBXNativeTarget "MicStopTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00C00010000000000000003 /* Debug */,
+				A00C00010000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00800010000000000000003 /* Build configuration list for PBXProject "MicStop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00C00010000000000000005 /* Debug */,
+				A00C00010000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A00900010000000000000001 /* Project object */;
+}
