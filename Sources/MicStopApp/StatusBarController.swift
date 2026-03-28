@@ -130,16 +130,14 @@ private struct StatusBarIconView: View {
     var body: some View {
         Image(systemName: desiredMuteState == .muted ? "mic.slash.fill" : "mic.fill")
             .font(.system(size: 13, weight: .semibold))
-            .foregroundStyle(desiredMuteState == .muted ? Color.primary : .white)
-            .padding(.horizontal, desiredMuteState == .muted ? 0 : 6)
-            .padding(.vertical, desiredMuteState == .muted ? 0 : 2)
-            .background {
-                if desiredMuteState == .unmuted {
-                    Capsule(style: .continuous)
-                        .fill(Color.red)
-                }
-            }
-            .frame(minWidth: desiredMuteState == .muted ? 18 : 28, minHeight: 18)
+            .foregroundStyle(.white)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(
+                Capsule(style: .continuous)
+                    .fill(desiredMuteState == .muted ? Color.green : Color.red)
+            )
+            .frame(minWidth: 28, minHeight: 18)
             .padding(.horizontal, 2)
     }
 }
