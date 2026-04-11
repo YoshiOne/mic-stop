@@ -1,0 +1,19 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="badge" x1="230" y1="204" x2="798" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DC2626"/>
+      <stop offset="1" stop-color="#991B1B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="224" fill="#F8FAFC"/>
+  <rect x="176" y="176" width="672" height="672" rx="188" fill="url(#badge)"/>
+  <rect x="252" y="252" width="520" height="520" rx="140" fill="#B91C1C" fill-opacity="0.35"/>
+  <rect x="430" y="308" width="164" height="244" rx="82" fill="white"/>
+  <path d="M356 470C356 451.222 371.222 436 390 436H430V484C430 529.287 466.713 566 512 566C557.287 566 594 529.287 594 484V436H634C652.778 436 668 451.222 668 470V484C668 561.185 614.892 625.959 542 642.717V678H606C628.091 678 646 695.909 646 718C646 740.091 628 758 606 758H418C395.909 758 378 740.091 378 718C378 695.909 395.909 678 418 678H482V642.717C409.108 625.959 356 561.185 356 484V470Z" fill="white"/>
+  <circle cx="706" cy="676" r="74" fill="#7F1D1D" fill-opacity="0.34"/>
+  <mask id="dot-cutout">
+    <rect width="1024" height="1024" fill="white"/>
+    <rect x="670" y="660" width="72" height="32" rx="16" fill="black"/>
+  </mask>
+  <circle cx="706" cy="676" r="58" fill="white" mask="url(#dot-cutout)"/>
+</svg>

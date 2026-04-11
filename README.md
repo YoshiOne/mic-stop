@@ -1,5 +1,9 @@
 # Mic Stop
 
+<p align="center">
+  <img src="design/mic-stop-icon.svg" alt="Mic Stop app icon" width="160" height="160">
+</p>
+
 Mic Stop is a tiny menu bar utility for macOS that lets you mute or unmute your microphone with a global hotkey.
 
 It stays out of the way, lives in the menu bar, and keeps your chosen mute state even if you switch from your MacBook mic to a Bluetooth headset or another input device.
