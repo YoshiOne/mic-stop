@@ -9,7 +9,8 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         let hostingController = NSHostingController(rootView: SettingsView(appState: appState))
         let window = NSWindow(contentViewController: hostingController)
         window.title = "Mic Stop Settings"
-        window.setContentSize(NSSize(width: 420, height: 260))
+        window.setContentSize(NSSize(width: 620, height: 560))
+        window.minSize = NSSize(width: 560, height: 520)
         window.styleMask = [.titled, .closable, .miniaturizable]
         window.isReleasedWhenClosed = false
         window.center()

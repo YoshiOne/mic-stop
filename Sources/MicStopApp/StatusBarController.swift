@@ -58,6 +58,9 @@ final class StatusBarController: NSObject {
         settingsItem.target = self
         quitItem.target = self
 
+        launchAtLoginItem.image = menuSymbolImage(named: "power.circle")
+        settingsItem.image = menuSymbolImage(named: "gearshape")
+
         microphoneItem.isEnabled = false
         shortcutItem.isEnabled = false
         modeItem.isEnabled = false
@@ -132,6 +135,12 @@ final class StatusBarController: NSObject {
 
     @objc private func quit() {
         NSApplication.shared.terminate(nil)
+    }
+
+    private func menuSymbolImage(named systemName: String) -> NSImage? {
+        let configuration = NSImage.SymbolConfiguration(pointSize: 14, weight: .medium)
+        return NSImage(systemSymbolName: systemName, accessibilityDescription: nil)?
+            .withSymbolConfiguration(configuration)
     }
 }
 

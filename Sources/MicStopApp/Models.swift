@@ -16,7 +16,7 @@ enum MuteState: String, Codable, Sendable {
     }
 }
 
-enum HotkeyMode: String, Codable, Sendable {
+enum HotkeyMode: String, Codable, Sendable, CaseIterable {
     case toggle
     case holdToTalk
 

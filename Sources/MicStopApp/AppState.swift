@@ -85,6 +85,17 @@ final class AppState: ObservableObject {
         )
     }
 
+    var hotkeyModeBinding: Binding<HotkeyMode> {
+        Binding(
+            get: { [weak self] in
+                self?.hotkeyMode ?? .toggle
+            },
+            set: { [weak self] mode in
+                self?.setHotkeyMode(mode)
+            }
+        )
+    }
+
     var toggleMenuTitle: String {
         if hotkeyMode == .holdToTalk {
             return "Hold Hotkey to Talk"
@@ -142,6 +153,27 @@ final class AppState: ObservableObject {
         } catch {
             present(error)
         }
+    }
+
+    func setHotkeyMode(_ newMode: HotkeyMode) {
+        guard hotkeyMode != newMode else {
+            return
+        }
+
+        hotkeyMode = newMode
+        holdToTalkPressIsActive = false
+
+        if newMode == .holdToTalk {
+            setPersistentMuteState(.muted)
+            return
+        }
+
+        if appliedDeviceState != desiredMuteState {
+            setPersistentMuteState(appliedDeviceState)
+            return
+        }
+
+        persistAndRefreshState()
     }
 
     private func wireUpCallbacks() {
@@ -266,21 +298,7 @@ final class AppState: ObservableObject {
     }
 
     private func toggleHotkeyMode() {
-        let newMode = hotkeyMode.toggled
-        hotkeyMode = newMode
-        holdToTalkPressIsActive = false
-
-        if newMode == .holdToTalk {
-            setPersistentMuteState(.muted)
-            return
-        }
-
-        if appliedDeviceState != desiredMuteState {
-            setPersistentMuteState(appliedDeviceState)
-            return
-        }
-
-        persistAndRefreshState()
+        setHotkeyMode(hotkeyMode.toggled)
     }
 
     private func setPersistentMuteState(_ state: MuteState) {
