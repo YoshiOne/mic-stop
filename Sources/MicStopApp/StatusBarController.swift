@@ -8,12 +8,14 @@ final class StatusBarController: NSObject {
     private let openSettingsHandler: () -> Void
     private let statusItem: NSStatusItem
     private let menu = NSMenu()
-    private let iconHostingView = NSHostingView(rootView: StatusBarIconView(desiredMuteState: .unmuted))
+    private let iconHostingView = NSHostingView(rootView: StatusBarIconView(desiredMuteState: .unmuted, hotkeyMode: .toggle))
     private var cancellables: Set<AnyCancellable> = []
 
     private let toggleItem = NSMenuItem(title: "", action: #selector(toggleMute), keyEquivalent: "")
     private let microphoneItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let shortcutItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+    private let modeItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+    private let hintItem = NSMenuItem(title: "Double-press hotkey to switch modes", action: nil, keyEquivalent: "")
     private let statusItemLine = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let errorItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let launchAtLoginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
@@ -58,6 +60,8 @@ final class StatusBarController: NSObject {
 
         microphoneItem.isEnabled = false
         shortcutItem.isEnabled = false
+        modeItem.isEnabled = false
+        hintItem.isEnabled = false
         statusItemLine.isEnabled = false
         errorItem.isEnabled = false
 
@@ -66,6 +70,8 @@ final class StatusBarController: NSObject {
             .separator(),
             microphoneItem,
             shortcutItem,
+            modeItem,
+            hintItem,
             statusItemLine,
             errorItem,
             .separator(),
@@ -87,11 +93,16 @@ final class StatusBarController: NSObject {
     }
 
     private func refreshUI() {
-        iconHostingView.rootView = StatusBarIconView(desiredMuteState: appState.desiredMuteState)
+        iconHostingView.rootView = StatusBarIconView(
+            desiredMuteState: appState.appliedDeviceState,
+            hotkeyMode: appState.hotkeyMode
+        )
 
         toggleItem.title = appState.toggleMenuTitle
+        toggleItem.isEnabled = appState.hotkeyMode == .toggle
         microphoneItem.title = "Microphone: \(appState.currentDeviceName)"
         shortcutItem.title = "Hotkey: \(appState.shortcut.displayString)"
+        modeItem.title = "Mode: \(appState.hotkeyMode.displayName)"
         statusItemLine.title = appState.statusLine
 
         launchAtLoginItem.state = appState.launchAtLoginEnabled ? .on : .off
@@ -126,18 +137,50 @@ final class StatusBarController: NSObject {
 
 private struct StatusBarIconView: View {
     let desiredMuteState: MuteState
+    let hotkeyMode: HotkeyMode
 
     var body: some View {
-        Image(systemName: desiredMuteState == .muted ? "mic.slash.fill" : "mic.fill")
-            .font(.system(size: 13, weight: .semibold))
-            .foregroundStyle(.white)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .background(
-                Capsule(style: .continuous)
-                    .fill(desiredMuteState == .muted ? Color.green : Color.red)
-            )
-            .frame(minWidth: 28, minHeight: 18)
-            .padding(.horizontal, 2)
+        ZStack(alignment: .bottomTrailing) {
+            Image(systemName: desiredMuteState == .muted ? "mic.slash.fill" : "mic.fill")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(foregroundColor)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2)
+                .background(
+                    Capsule(style: .continuous)
+                        .fill(backgroundColor)
+                )
+
+            if hotkeyMode == .holdToTalk {
+                Image(systemName: "hand.tap.fill")
+                    .font(.system(size: 7, weight: .bold))
+                    .foregroundStyle(.white)
+                    .padding(3)
+                    .background(
+                        Circle()
+                            .fill(Color.orange)
+                    )
+                    .offset(x: 2, y: 2)
+            }
+        }
+        .frame(minWidth: 28, minHeight: 18)
+        .padding(.horizontal, 2)
+    }
+
+    private var foregroundColor: Color {
+        desiredMuteState == .muted ? .primary : .white
+    }
+
+    private var backgroundColor: Color {
+        switch (hotkeyMode, desiredMuteState) {
+        case (.toggle, .muted):
+            return .clear
+        case (.toggle, .unmuted):
+            return .red
+        case (.holdToTalk, .muted):
+            return Color.gray.opacity(0.28)
+        case (.holdToTalk, .unmuted):
+            return .orange
+        }
     }
 }

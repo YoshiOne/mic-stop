@@ -16,6 +16,24 @@ enum MuteState: String, Codable, Sendable {
     }
 }
 
+enum HotkeyMode: String, Codable, Sendable {
+    case toggle
+    case holdToTalk
+
+    var toggled: HotkeyMode {
+        self == .toggle ? .holdToTalk : .toggle
+    }
+
+    var displayName: String {
+        switch self {
+        case .toggle:
+            return "Toggle"
+        case .holdToTalk:
+            return "Hold to Talk"
+        }
+    }
+}
+
 enum MuteApplyStrategy: String, Codable, Sendable {
     case processMute
     case deviceMute

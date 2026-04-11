@@ -58,6 +58,24 @@ struct MicrophoneMuteControllerTests {
     }
 
     @Test
+    func explicitMuteAndUnmuteUseSameVolumeRestorationPath() throws {
+        let audio = MockAudioHardware()
+        audio.supportsProcessInputMuteStorage = false
+        audio.deviceMuteSupported = false
+        audio.volumeSupported = true
+        audio.defaultInputDeviceIDStorage = 404
+        audio.volumeByDevice[404] = 0.73
+
+        let controller = MicrophoneMuteController(audioHardware: audio)
+
+        try controller.mute()
+        #expect(audio.volumeByDevice[404] == 0)
+
+        try controller.unmute()
+        #expect(audio.volumeByDevice[404] == 0.73)
+    }
+
+    @Test
     func desiredMuteStateSurvivesDeviceSwitch() throws {
         let audio = MockAudioHardware()
         audio.supportsProcessInputMuteStorage = false

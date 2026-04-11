@@ -30,6 +30,19 @@ struct SettingsView: View {
                 .frame(width: 180, height: 34)
             }
 
+            HStack(alignment: .top) {
+                Text("Hotkey mode")
+                Spacer()
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(appState.hotkeyMode.displayName)
+                    Text("Double-press the hotkey to switch between Toggle and Hold to Talk.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: 240, alignment: .trailing)
+                }
+            }
+
             Toggle("Launch at Login", isOn: appState.launchAtLoginBinding)
 
             Text(appState.statusLine)

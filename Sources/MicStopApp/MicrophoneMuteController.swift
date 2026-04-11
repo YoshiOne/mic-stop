@@ -34,9 +34,24 @@ final class MicrophoneMuteController {
         try setDesiredMute(desiredMuteState.toggled)
     }
 
+    func mute() throws {
+        try setDesiredMute(.muted)
+    }
+
+    func unmute() throws {
+        try setDesiredMute(.unmuted)
+    }
+
     func setDesiredMute(_ newState: MuteState) throws {
         desiredMuteState = newState
         try applyDesiredStateToCurrentDevice()
+    }
+
+    func applyTransientMuteState(_ state: MuteState) throws {
+        let deviceID = try audioHardware.defaultInputDeviceID()
+        let strategy = strategy(for: deviceID)
+        try apply(strategy: strategy, to: deviceID, desiredState: state)
+        try refreshObservedState()
     }
 
     func applyDesiredStateToCurrentDevice() throws {

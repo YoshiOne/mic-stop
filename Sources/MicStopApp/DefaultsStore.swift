@@ -4,6 +4,7 @@ final class DefaultsStore {
     private enum Keys {
         static let shortcut = "shortcut"
         static let desiredMuteState = "desiredMuteState"
+        static let hotkeyMode = "hotkeyMode"
         static let launchAtLoginInitialized = "launchAtLoginInitialized"
     }
 
@@ -45,6 +46,21 @@ final class DefaultsStore {
 
     func saveDesiredMuteState(_ state: MuteState) {
         defaults.set(state.rawValue, forKey: Keys.desiredMuteState)
+    }
+
+    func loadHotkeyMode() -> HotkeyMode {
+        guard
+            let rawValue = defaults.string(forKey: Keys.hotkeyMode),
+            let mode = HotkeyMode(rawValue: rawValue)
+        else {
+            return .toggle
+        }
+
+        return mode
+    }
+
+    func saveHotkeyMode(_ mode: HotkeyMode) {
+        defaults.set(mode.rawValue, forKey: Keys.hotkeyMode)
     }
 
     var shouldInitializeLaunchAtLogin: Bool {

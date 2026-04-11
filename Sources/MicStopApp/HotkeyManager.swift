@@ -1,8 +1,18 @@
 import Carbon
 import Foundation
 
-final class HotkeyManager {
+protocol HotkeyManaging: AnyObject {
+    var onHotKeyPressed: (() -> Void)? { get set }
+    var onHotKeyReleased: (() -> Void)? { get set }
+
+    func register(shortcut: AppShortcut) throws
+    func unregister()
+    func updateShortcut(to shortcut: AppShortcut) throws
+}
+
+final class HotkeyManager: HotkeyManaging {
     var onHotKeyPressed: (() -> Void)?
+    var onHotKeyReleased: (() -> Void)?
 
     private static let signature: OSType = 0x4D44484B
     private var hotKeyRef: EventHotKeyRef?
@@ -24,7 +34,7 @@ final class HotkeyManager {
         try shortcut.validate()
         unregister()
 
-        var hotKeyID = EventHotKeyID(signature: Self.signature, id: 1)
+        let hotKeyID = EventHotKeyID(signature: Self.signature, id: 1)
         let status = RegisterEventHotKey(
             shortcut.keyCode,
             shortcut.carbonModifiers,
@@ -51,10 +61,16 @@ final class HotkeyManager {
     }
 
     private func installEventHandler() {
-        var eventType = EventTypeSpec(
-            eventClass: OSType(kEventClassKeyboard),
-            eventKind: UInt32(kEventHotKeyPressed)
-        )
+        var eventTypes = [
+            EventTypeSpec(
+                eventClass: OSType(kEventClassKeyboard),
+                eventKind: UInt32(kEventHotKeyPressed)
+            ),
+            EventTypeSpec(
+                eventClass: OSType(kEventClassKeyboard),
+                eventKind: UInt32(kEventHotKeyReleased)
+            )
+        ]
 
         let callback: EventHandlerUPP = { _, eventRef, userData in
             guard let userData, let eventRef else {
@@ -66,14 +82,16 @@ final class HotkeyManager {
         }
 
         let userData = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        InstallEventHandler(
-            GetEventDispatcherTarget(),
-            callback,
-            1,
-            &eventType,
-            userData,
-            &eventHandlerRef
-        )
+        _ = eventTypes.withUnsafeMutableBufferPointer { buffer in
+            InstallEventHandler(
+                GetEventDispatcherTarget(),
+                callback,
+                buffer.count,
+                buffer.baseAddress,
+                userData,
+                &eventHandlerRef
+            )
+        }
     }
 
     private func handleHotkey(_ event: EventRef) -> OSStatus {
@@ -93,7 +111,14 @@ final class HotkeyManager {
         }
 
         if hotKeyID.signature == Self.signature {
-            onHotKeyPressed?()
+            switch GetEventKind(event) {
+            case UInt32(kEventHotKeyPressed):
+                onHotKeyPressed?()
+            case UInt32(kEventHotKeyReleased):
+                onHotKeyReleased?()
+            default:
+                break
+            }
         }
 
         return noErr

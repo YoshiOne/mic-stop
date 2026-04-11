@@ -21,6 +21,8 @@
 		A0010001000000000000000E /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000013 /* SettingsWindowController.swift */; };
 		A0010001000000000000000B /* AppShortcutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020001000000000000000B /* AppShortcutTests.swift */; };
 		A0010001000000000000000C /* MicrophoneMuteControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0020001000000000000000C /* MicrophoneMuteControllerTests.swift */; };
+		A0010001000000000000000F /* DefaultsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000014 /* DefaultsStoreTests.swift */; };
+		A00100010000000000000010 /* AppStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00200010000000000000015 /* AppStateTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		A0020001000000000000000C /* MicrophoneMuteControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MicrophoneMuteControllerTests.swift; path = Tests/MicStopAppTests/MicrophoneMuteControllerTests.swift; sourceTree = SOURCE_ROOT; };
 		A00200010000000000000012 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatusBarController.swift; path = Sources/MicStopApp/StatusBarController.swift; sourceTree = SOURCE_ROOT; };
 		A00200010000000000000013 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsWindowController.swift; path = Sources/MicStopApp/SettingsWindowController.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000014 /* DefaultsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DefaultsStoreTests.swift; path = Tests/MicStopAppTests/DefaultsStoreTests.swift; sourceTree = SOURCE_ROOT; };
+		A00200010000000000000015 /* AppStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppStateTests.swift; path = Tests/MicStopAppTests/AppStateTests.swift; sourceTree = SOURCE_ROOT; };
 		A0020001000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = MicStop/Info.plist; sourceTree = SOURCE_ROOT; };
 		A0020001000000000000000E /* MicStop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MicStop.entitlements; path = MicStop/MicStop.entitlements; sourceTree = SOURCE_ROOT; };
 		A0020001000000000000000F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = MicStopTests/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -98,6 +102,8 @@
 			children = (
 				A0020001000000000000000B /* AppShortcutTests.swift */,
 				A0020001000000000000000C /* MicrophoneMuteControllerTests.swift */,
+				A00200010000000000000014 /* DefaultsStoreTests.swift */,
+				A00200010000000000000015 /* AppStateTests.swift */,
 				A0020001000000000000000F /* Info.plist */,
 			);
 			path = MicStopTests;
@@ -231,6 +237,8 @@
 			files = (
 				A0010001000000000000000B /* AppShortcutTests.swift in Sources */,
 				A0010001000000000000000C /* MicrophoneMuteControllerTests.swift in Sources */,
+				A0010001000000000000000F /* DefaultsStoreTests.swift in Sources */,
+				A00100010000000000000010 /* AppStateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

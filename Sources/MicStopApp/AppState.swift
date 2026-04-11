@@ -8,29 +8,41 @@ final class AppState: ObservableObject {
     @Published private(set) var appliedDeviceState: MuteState
     @Published private(set) var currentDeviceName: String
     @Published private(set) var shortcut: AppShortcut
+    @Published private(set) var hotkeyMode: HotkeyMode
     @Published private(set) var launchAtLoginEnabled: Bool
     @Published private(set) var lastError: String?
 
     private let defaultsStore: DefaultsStore
     private let muteController: MicrophoneMuteController
-    private let hotkeyManager: HotkeyManager
+    private let hotkeyManager: any HotkeyManaging
     private let audioObserver: AudioDeviceObserver
-    private let launchAtLoginManager: LaunchAtLoginManager
+    private let launchAtLoginManager: any LaunchAtLoginManaging
+    private let nowProvider: () -> Date
+    private let hotkeyDoublePressThreshold: TimeInterval
+
+    private var lastHotkeyPressDate: Date?
+    private var pendingToggleWorkItem: DispatchWorkItem?
+    private var holdToTalkPressIsActive = false
 
     init(
         defaultsStore: DefaultsStore = DefaultsStore(),
         audioHardware: AudioHardwareControlling = SystemAudioHardwareController(),
-        hotkeyManager: HotkeyManager = HotkeyManager(),
-        launchAtLoginManager: LaunchAtLoginManager = LaunchAtLoginManager()
+        hotkeyManager: any HotkeyManaging = HotkeyManager(),
+        launchAtLoginManager: any LaunchAtLoginManaging = LaunchAtLoginManager(),
+        nowProvider: @escaping () -> Date = Date.init,
+        hotkeyDoublePressThreshold: TimeInterval = 0.3
     ) {
         self.defaultsStore = defaultsStore
         self.shortcut = defaultsStore.loadShortcut()
         self.desiredMuteState = defaultsStore.loadDesiredMuteState()
+        self.hotkeyMode = defaultsStore.loadHotkeyMode()
         self.appliedDeviceState = .unmuted
         self.currentDeviceName = "Unknown Microphone"
         self.hotkeyManager = hotkeyManager
         self.launchAtLoginManager = launchAtLoginManager
         self.launchAtLoginEnabled = launchAtLoginManager.isEnabled
+        self.nowProvider = nowProvider
+        self.hotkeyDoublePressThreshold = hotkeyDoublePressThreshold
 
         self.muteController = MicrophoneMuteController(
             audioHardware: audioHardware,
@@ -74,7 +86,11 @@ final class AppState: ObservableObject {
     }
 
     var toggleMenuTitle: String {
-        desiredMuteState == .muted ? "Unmute Microphone" : "Mute Microphone"
+        if hotkeyMode == .holdToTalk {
+            return "Hold Hotkey to Talk"
+        }
+
+        return desiredMuteState == .muted ? "Unmute Microphone" : "Mute Microphone"
     }
 
     var statusLine: String {
@@ -82,9 +98,14 @@ final class AppState: ObservableObject {
     }
 
     func toggleMute() {
+        guard hotkeyMode == .toggle else {
+            enforceHoldToTalkBaseline()
+            return
+        }
+
         do {
             try muteController.toggleMute()
-            persistAndRefresh()
+            persistAndRefreshState()
         } catch {
             present(error)
         }
@@ -126,7 +147,13 @@ final class AppState: ObservableObject {
     private func wireUpCallbacks() {
         hotkeyManager.onHotKeyPressed = { [weak self] in
             Task { @MainActor [weak self] in
-                self?.toggleMute()
+                self?.handleHotkeyPressed()
+            }
+        }
+
+        hotkeyManager.onHotKeyReleased = { [weak self] in
+            Task { @MainActor [weak self] in
+                self?.handleHotkeyReleased()
             }
         }
 
@@ -180,25 +207,144 @@ final class AppState: ObservableObject {
     private func restoreDesiredState() {
         do {
             try muteController.applyDesiredStateToCurrentDevice()
-            persistAndRefresh()
+            persistAndRefreshState()
         } catch {
             present(error)
         }
     }
 
     private func handleDefaultInputDeviceChange() {
+        if hotkeyMode == .holdToTalk, holdToTalkPressIsActive {
+            applyTransientMuteState(.unmuted)
+            return
+        }
+
         do {
             try muteController.handleDefaultInputDeviceChanged()
-            persistAndRefresh()
+            persistAndRefreshState()
         } catch {
             present(error)
         }
     }
 
-    private func persistAndRefresh() {
+    private func persistAndRefreshState() {
         syncFromController()
         defaultsStore.saveDesiredMuteState(desiredMuteState)
+        defaultsStore.saveHotkeyMode(hotkeyMode)
         lastError = nil
+    }
+
+    private func handleHotkeyPressed() {
+        let now = nowProvider()
+
+        if let previousPressDate = lastHotkeyPressDate,
+           now.timeIntervalSince(previousPressDate) <= hotkeyDoublePressThreshold {
+            cancelPendingToggleAction()
+            lastHotkeyPressDate = nil
+            toggleHotkeyMode()
+            return
+        }
+
+        lastHotkeyPressDate = now
+
+        switch hotkeyMode {
+        case .toggle:
+            scheduleToggleAction()
+        case .holdToTalk:
+            holdToTalkPressIsActive = true
+            applyTransientMuteState(.unmuted)
+        }
+    }
+
+    private func handleHotkeyReleased() {
+        guard hotkeyMode == .holdToTalk, holdToTalkPressIsActive else {
+            return
+        }
+
+        holdToTalkPressIsActive = false
+        enforceHoldToTalkBaseline()
+    }
+
+    private func toggleHotkeyMode() {
+        let newMode = hotkeyMode.toggled
+        hotkeyMode = newMode
+        holdToTalkPressIsActive = false
+
+        if newMode == .holdToTalk {
+            setPersistentMuteState(.muted)
+            return
+        }
+
+        if appliedDeviceState != desiredMuteState {
+            setPersistentMuteState(appliedDeviceState)
+            return
+        }
+
+        persistAndRefreshState()
+    }
+
+    private func setPersistentMuteState(_ state: MuteState) {
+        do {
+            try muteController.setDesiredMute(state)
+            persistAndRefreshState()
+        } catch {
+            present(error)
+        }
+    }
+
+    private func applyTransientMuteState(_ state: MuteState) {
+        do {
+            try muteController.applyTransientMuteState(state)
+            syncFromController()
+            defaultsStore.saveDesiredMuteState(desiredMuteState)
+            defaultsStore.saveHotkeyMode(hotkeyMode)
+            lastError = nil
+        } catch {
+            present(error)
+        }
+    }
+
+    private func enforceHoldToTalkBaseline() {
+        holdToTalkPressIsActive = false
+        setPersistentMuteState(.muted)
+    }
+
+    private func scheduleToggleAction() {
+        cancelPendingToggleAction()
+
+        let workItem = DispatchWorkItem { [weak self] in
+            Task { @MainActor [weak self] in
+                self?.commitPendingToggleAction()
+            }
+        }
+
+        pendingToggleWorkItem = workItem
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + hotkeyDoublePressThreshold,
+            execute: workItem
+        )
+    }
+
+    private func cancelPendingToggleAction() {
+        pendingToggleWorkItem?.cancel()
+        pendingToggleWorkItem = nil
+    }
+
+    private func commitPendingToggleAction() {
+        guard pendingToggleWorkItem != nil else {
+            return
+        }
+
+        pendingToggleWorkItem = nil
+        toggleMute()
+    }
+
+    func flushPendingHotkeyAction() {
+        commitPendingToggleAction()
+    }
+
+    func simulateDefaultInputDeviceChangeForTesting() {
+        handleDefaultInputDeviceChange()
     }
 
     private func syncFromController() {
