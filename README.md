@@ -1,6 +1,6 @@
 # Mic Stop
 
-[![Swift Tests](https://github.com/YoshiOne/mic-stop/actions/workflows/swift-tests.yml/badge.svg?branch=master)](https://github.com/YoshiOne/mic-stop/actions/workflows/swift-tests.yml)
+[![Swift Tests](https://github.com/YoshiOne/mic-stop/workflows/Swift%20Tests/badge.svg)](https://github.com/YoshiOne/mic-stop/actions/workflows/swift-tests.yml)
 
 <p align="center">
   <img src="design/mic-stop-icon.svg" alt="Mic Stop app icon" width="160" height="160">
