@@ -57,6 +57,8 @@ The repo intentionally keeps two entry paths:
 - Swift package run: `swift run --disable-sandbox MicStopApp`
 - Swift package test: `swift test --disable-sandbox`
 - Preferred packaging and manual QA: open `MicStop.xcodeproj` in Xcode and run the `MicStop` scheme.
+- GitHub Actions CI lives at `.github/workflows/swift-tests.yml` and runs `swift test --disable-sandbox` on pushes to `master` and pull requests targeting `master`.
+- `README.md` includes a workflow badge for `Swift Tests`; keep the workflow file name and badge URL aligned if the workflow is renamed.
 
 ## Test Coverage Notes
 
