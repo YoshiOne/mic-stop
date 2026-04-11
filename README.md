@@ -11,14 +11,33 @@ It stays out of the way, lives in the menu bar, and keeps your chosen mute state
 ## What It Does
 
 - toggles your microphone from anywhere with a keyboard shortcut
+- supports both `Toggle` and `Hold to Talk` hotkey modes
+- lets you switch hotkey modes from Settings or by double-pressing the hotkey
 - runs quietly in the menu bar without a Dock icon
 - remembers your preferred hotkey
+- remembers your preferred hotkey mode and mute baseline across launches
 - follows microphone changes automatically
 - can launch when you log in
+
+## Hotkey Modes
+
+- `Toggle`: one press flips between muted and live.
+- `Hold to Talk`: Mic Stop keeps a safe muted baseline, temporarily unmutes while the hotkey is held, and remutes on release.
+
+When you are in `Hold to Talk`, switching microphones keeps the muted baseline and re-applies the temporary live state if the key is still held.
 
 ## Requirements
 
 - macOS Sequoia or newer
+
+## Settings
+
+The settings window includes:
+
+- a shortcut recorder for changing the global hotkey
+- a segmented control for choosing `Toggle` or `Hold to Talk`
+- a launch-at-login switch
+- live status cards for the current microphone, desired state, and applied state
 
 ## Running the App
 
