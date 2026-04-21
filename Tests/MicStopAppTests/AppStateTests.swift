@@ -69,7 +69,6 @@ struct AppStateTests {
 
         context.hotkeyManager.simulatePress()
         await settleMainActor()
-        appState.flushPendingHotkeyAction()
         #expect(appState.desiredMuteState == .unmuted)
 
         context.hotkeyManager.simulateRelease()
@@ -84,12 +83,11 @@ struct AppStateTests {
 
         context.hotkeyManager.simulatePress()
         await settleMainActor()
-        #expect(appState.desiredMuteState == .muted)
+        #expect(appState.desiredMuteState == .unmuted)
 
         context.clock.advance(by: 0.1)
         context.hotkeyManager.simulatePress()
         await settleMainActor()
-        appState.flushPendingHotkeyAction()
 
         #expect(appState.hotkeyMode == .holdToTalk)
         #expect(appState.desiredMuteState == .muted)

@@ -21,7 +21,6 @@ final class AppState: ObservableObject {
     private let hotkeyDoublePressThreshold: TimeInterval
 
     private var lastHotkeyPressDate: Date?
-    private var pendingToggleWorkItem: DispatchWorkItem?
     private var holdToTalkPressIsActive = false
 
     init(
@@ -271,7 +270,6 @@ final class AppState: ObservableObject {
 
         if let previousPressDate = lastHotkeyPressDate,
            now.timeIntervalSince(previousPressDate) <= hotkeyDoublePressThreshold {
-            cancelPendingToggleAction()
             lastHotkeyPressDate = nil
             toggleHotkeyMode()
             return
@@ -281,7 +279,7 @@ final class AppState: ObservableObject {
 
         switch hotkeyMode {
         case .toggle:
-            scheduleToggleAction()
+            toggleMute()
         case .holdToTalk:
             holdToTalkPressIsActive = true
             applyTransientMuteState(.unmuted)
@@ -327,38 +325,8 @@ final class AppState: ObservableObject {
         setPersistentMuteState(.muted)
     }
 
-    private func scheduleToggleAction() {
-        cancelPendingToggleAction()
-
-        let workItem = DispatchWorkItem { [weak self] in
-            Task { @MainActor [weak self] in
-                self?.commitPendingToggleAction()
-            }
-        }
-
-        pendingToggleWorkItem = workItem
-        DispatchQueue.main.asyncAfter(
-            deadline: .now() + hotkeyDoublePressThreshold,
-            execute: workItem
-        )
-    }
-
-    private func cancelPendingToggleAction() {
-        pendingToggleWorkItem?.cancel()
-        pendingToggleWorkItem = nil
-    }
-
-    private func commitPendingToggleAction() {
-        guard pendingToggleWorkItem != nil else {
-            return
-        }
-
-        pendingToggleWorkItem = nil
-        toggleMute()
-    }
-
     func flushPendingHotkeyAction() {
-        commitPendingToggleAction()
+        // Toggle actions are applied immediately. Kept for test compatibility.
     }
 
     func simulateDefaultInputDeviceChangeForTesting() {
