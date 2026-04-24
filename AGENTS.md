@@ -21,14 +21,14 @@ The repo intentionally keeps two entry paths:
 
 - `MicStopApp.swift` wires the app delegate and settings scene.
 - `StatusBarController.swift` owns the `NSStatusItem` menu bar UI. Use this instead of `MenuBarExtra`; the project moved away from `MenuBarExtra` because menu bar template rendering prevented reliable custom coloring/backgrounds.
-- `AppState.swift` is the main UI-facing state container and coordinator.
-- `MicrophoneMuteController.swift` owns mute application logic and the "desired mute state" model.
+- `AppState.swift` is the main UI-facing state container and coordinator. It also exposes human-readable status and mute-strategy diagnostics for the menu and settings window.
+- `MicrophoneMuteController.swift` owns mute application logic, the "desired mute state" model, the applied mute strategy, and per-device volume fallback restoration.
 - `DefaultsStore.swift` persists the shortcut, desired mute state, hotkey mode, and first-run launch-at-login initialization.
 - `HotkeyManager.swift` listens for both hotkey press and hotkey release events; release handling matters for hold-to-talk.
 - `AudioHardware.swift` wraps Core Audio / HAL interactions.
 - `AudioDeviceObserver.swift` listens for default input device changes and relevant property updates.
 - `SettingsView.swift` and `SettingsWindowController.swift` implement the settings UI/window.
-- `Models.swift` contains the `HotkeyMode` model alongside the mute-state and shortcut types.
+- `Models.swift` contains the `HotkeyMode` and `MuteApplyStrategy` models alongside the mute-state and shortcut types.
 
 ## Mute Logic Rules
 
@@ -42,15 +42,18 @@ The repo intentionally keeps two entry paths:
 - In `holdToTalk`, the persisted baseline must stay `muted`; temporary unmute while the key is held must not overwrite that baseline.
 - If the input device changes during an active hold-to-talk press, the newly active device should become live immediately, but the app must still fall back to the muted baseline on release.
 - Keep per-device cached previous input volumes so unmute restores the prior level for the correct microphone.
+- If volume fallback is asked to unmute without a cached previous level, restore to an audible default instead of leaving the microphone at `0`.
+- Treat `kAudioObjectUnknown` as no selected input microphone and surface a readable error rather than an opaque Core Audio failure.
 
 ## UI Rules
 
 - Muted state: regular white slashed mic icon in the menu bar.
 - Live state: white mic icon on a colored background capsule.
 - Hold-to-talk mode adds a small hand badge in the menu bar and uses distinct gray/orange capsule colors for muted/live transient states.
-- The status menu exposes current microphone, shortcut, current mode, a double-press mode-switch hint, and the desired/applied diagnostic line.
+- The status menu exposes a plain status summary (`Muted on ...` / `Live on ...`), current microphone, shortcut, current mode, the double-press mode-switch hint, the desired/applied diagnostic line, and the current mute strategy.
 - Settings are opened through the custom AppKit window controller, not via `showSettingsWindow:`. Avoid reintroducing the older SwiftUI settings-opening path that triggers warnings.
-- The current settings window is a richer SwiftUI dashboard with shortcut capture, hotkey mode selection, launch-at-login control, and status/error cards.
+- The current settings window is intentionally compact: shortcut capture, hotkey mode selection, launch-at-login control, status diagnostics, mute-strategy diagnostics, and small inline error rows.
+- Shortcut validation errors should be visible in the settings window; do not rely on `NSSound.beep()` alone.
 
 ## Build And Test
 
@@ -62,9 +65,9 @@ The repo intentionally keeps two entry paths:
 
 ## Test Coverage Notes
 
-- `AppStateTests.swift` covers hotkey mode switching, double-press behavior, hold-to-talk press/release flow, and device-switch handling while pressed.
+- `AppStateTests.swift` covers hotkey mode switching, double-press behavior, hold-to-talk press/release flow, device-switch handling while pressed, readable status summaries, shortcut validation errors, and missing-input-device errors.
 - `DefaultsStoreTests.swift` covers hotkey mode persistence.
-- `MicrophoneMuteControllerTests.swift` covers mute strategy priority and per-device input-volume restoration.
+- `MicrophoneMuteControllerTests.swift` covers mute strategy priority, strategy snapshots, no-input-device errors, and per-device input-volume restoration.
 
 ## Change Discipline
 

@@ -11,6 +11,8 @@ final class AppState: ObservableObject {
     @Published private(set) var hotkeyMode: HotkeyMode
     @Published private(set) var launchAtLoginEnabled: Bool
     @Published private(set) var lastError: String?
+    @Published private(set) var shortcutRecorderError: String?
+    @Published private(set) var currentApplyStrategy: MuteApplyStrategy
 
     private let defaultsStore: DefaultsStore
     private let muteController: MicrophoneMuteController
@@ -37,6 +39,7 @@ final class AppState: ObservableObject {
         self.hotkeyMode = defaultsStore.loadHotkeyMode()
         self.appliedDeviceState = .unmuted
         self.currentDeviceName = "Unknown Microphone"
+        self.currentApplyStrategy = .unsupported
         self.hotkeyManager = hotkeyManager
         self.launchAtLoginManager = launchAtLoginManager
         self.launchAtLoginEnabled = launchAtLoginManager.isEnabled
@@ -107,6 +110,14 @@ final class AppState: ObservableObject {
         "Desired: \(desiredMuteState.displayName), Applied: \(appliedDeviceState.displayName)"
     }
 
+    var statusSummary: String {
+        "\(appliedDeviceState.displayName) on \(currentDeviceName)"
+    }
+
+    var strategyLine: String {
+        "Strategy: \(currentApplyStrategy.displayName)"
+    }
+
     func toggleMute() {
         guard hotkeyMode == .toggle else {
             enforceHoldToTalkBaseline()
@@ -126,10 +137,15 @@ final class AppState: ObservableObject {
             try hotkeyManager.updateShortcut(to: newShortcut)
             shortcut = newShortcut
             defaultsStore.saveShortcut(newShortcut)
+            shortcutRecorderError = nil
             lastError = nil
         } catch {
             present(error)
         }
+    }
+
+    func presentShortcutValidationError(_ error: Error) {
+        shortcutRecorderError = error.localizedDescription
     }
 
     func setLaunchAtLogin(_ enabled: Bool) {
@@ -193,6 +209,7 @@ final class AppState: ObservableObject {
                 self?.desiredMuteState = snapshot.desiredMuteState
                 self?.appliedDeviceState = snapshot.appliedDeviceState
                 self?.currentDeviceName = snapshot.observedInputDevice.name
+                self?.currentApplyStrategy = snapshot.applyStrategy
             }
         }
 
@@ -338,6 +355,7 @@ final class AppState: ObservableObject {
         desiredMuteState = snapshot.desiredMuteState
         appliedDeviceState = snapshot.appliedDeviceState
         currentDeviceName = snapshot.observedInputDevice.name
+        currentApplyStrategy = snapshot.applyStrategy
         launchAtLoginEnabled = launchAtLoginManager.isEnabled
     }
 

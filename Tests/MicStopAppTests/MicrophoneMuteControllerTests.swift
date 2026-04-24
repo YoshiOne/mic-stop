@@ -92,11 +92,49 @@ struct MicrophoneMuteControllerTests {
         #expect(controller.stateSnapshot.desiredMuteState == .muted)
         #expect(audio.deviceMuteByDevice[2] == true)
     }
+
+    @Test
+    func strategyIsIncludedInStateSnapshot() throws {
+        let audio = MockAudioHardware()
+        audio.deviceMuteSupported = false
+        audio.volumeSupported = true
+
+        let controller = MicrophoneMuteController(audioHardware: audio)
+        try controller.refreshObservedState()
+
+        #expect(controller.stateSnapshot.applyStrategy == .volumeFallback)
+    }
+
+    @Test
+    func volumeFallbackUnmuteWithoutCachedVolumeRestoresAudibleDefault() throws {
+        let audio = MockAudioHardware()
+        audio.deviceMuteSupported = false
+        audio.volumeSupported = true
+        audio.defaultInputDeviceIDStorage = 88
+        audio.volumeByDevice[88] = 0
+
+        let controller = MicrophoneMuteController(audioHardware: audio, initialDesiredMuteState: .muted)
+        try controller.setDesiredMute(.unmuted)
+
+        #expect(audio.volumeByDevice[88] == 1)
+    }
+
+    @Test
+    func noInputDeviceThrowsReadableError() {
+        let audio = MockAudioHardware()
+        audio.defaultInputDeviceError = AudioHardwareError.noInputDevice
+        let controller = MicrophoneMuteController(audioHardware: audio)
+
+        #expect(throws: AudioHardwareError.noInputDevice) {
+            try controller.refreshObservedState()
+        }
+    }
 }
 
 final class MockAudioHardware: AudioHardwareControlling {
     var supportsProcessInputMuteStorage = false
     var defaultInputDeviceIDStorage: AudioDeviceID = 1
+    var defaultInputDeviceError: Error?
     var processInputMute = false
     var deviceMuteSupported = false
     var volumeSupported = false
@@ -108,7 +146,11 @@ final class MockAudioHardware: AudioHardwareControlling {
     }
 
     func defaultInputDeviceID() throws -> AudioDeviceID {
-        defaultInputDeviceIDStorage
+        if let defaultInputDeviceError {
+            throw defaultInputDeviceError
+        }
+
+        return defaultInputDeviceIDStorage
     }
 
     func deviceName(_ deviceID: AudioDeviceID) -> String {

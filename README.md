@@ -9,6 +9,7 @@
 Mic Stop is a tiny menu bar utility for macOS that lets you mute or unmute your microphone with a global hotkey.
 
 It stays out of the way, lives in the menu bar, and keeps your chosen mute state even if you switch from your MacBook mic to a Bluetooth headset or another input device.
+The menu shows the current microphone state in plain language, with compact diagnostics when you need to check how mute is being applied.
 
 ## What It Does
 
@@ -19,6 +20,7 @@ It stays out of the way, lives in the menu bar, and keeps your chosen mute state
 - remembers your preferred hotkey
 - remembers your preferred hotkey mode and mute baseline across launches
 - follows microphone changes automatically
+- shows the current mute strategy as a diagnostic detail
 - can launch when you log in
 
 ## Hotkey Modes
@@ -39,7 +41,11 @@ The settings window includes:
 - a shortcut recorder for changing the global hotkey
 - a segmented control for choosing `Toggle` or `Hold to Talk`
 - a launch-at-login switch
-- live status cards for the current microphone, desired state, and applied state
+- compact status text for the desired and applied microphone state
+- the current mute strategy, such as `Device mute` or `Volume fallback`
+- inline shortcut and microphone error messages when something needs attention
+
+Mic Stop stays intentionally small: no profiles, per-app controls, notifications, widgets, or extra modes.
 
 ## Running the App
 

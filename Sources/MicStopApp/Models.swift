@@ -39,6 +39,19 @@ enum MuteApplyStrategy: String, Codable, Sendable {
     case deviceMute
     case volumeFallback
     case unsupported
+
+    var displayName: String {
+        switch self {
+        case .processMute:
+            return "Process mute fallback"
+        case .deviceMute:
+            return "Device mute"
+        case .volumeFallback:
+            return "Volume fallback"
+        case .unsupported:
+            return "Unsupported"
+        }
+    }
 }
 
 struct ObservedInputDevice: Equatable, Sendable {

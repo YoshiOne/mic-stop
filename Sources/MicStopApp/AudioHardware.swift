@@ -25,11 +25,17 @@ final class SystemAudioHardwareController: AudioHardwareControlling {
     }
 
     func defaultInputDeviceID() throws -> AudioDeviceID {
-        try read(
+        let deviceID = try read(
             objectID: AudioObjectID(kAudioObjectSystemObject),
             address: defaultInputDeviceAddress,
             as: AudioDeviceID.self
         )
+
+        guard deviceID != kAudioObjectUnknown else {
+            throw AudioHardwareError.noInputDevice
+        }
+
+        return deviceID
     }
 
     func deviceName(_ deviceID: AudioDeviceID) -> String {
@@ -241,12 +247,15 @@ final class SystemAudioHardwareController: AudioHardwareControlling {
     }
 }
 
-enum AudioHardwareError: LocalizedError {
+enum AudioHardwareError: LocalizedError, Equatable {
+    case noInputDevice
     case propertyUnavailable(String)
     case osStatus(OSStatus, context: String)
 
     var errorDescription: String? {
         switch self {
+        case .noInputDevice:
+            return "No input microphone is selected."
         case .propertyUnavailable(let description):
             return description
         case .osStatus(let status, let context):

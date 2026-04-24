@@ -16,7 +16,9 @@ final class StatusBarController: NSObject {
     private let shortcutItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let modeItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let hintItem = NSMenuItem(title: "Double-press hotkey to switch modes", action: nil, keyEquivalent: "")
+    private let summaryItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let statusItemLine = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+    private let strategyItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let errorItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
     private let launchAtLoginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
     private let settingsItem = NSMenuItem(title: "Settings", action: #selector(openSettings), keyEquivalent: ",")
@@ -65,17 +67,21 @@ final class StatusBarController: NSObject {
         shortcutItem.isEnabled = false
         modeItem.isEnabled = false
         hintItem.isEnabled = false
+        summaryItem.isEnabled = false
         statusItemLine.isEnabled = false
+        strategyItem.isEnabled = false
         errorItem.isEnabled = false
 
         menu.items = [
             toggleItem,
             .separator(),
+            summaryItem,
             microphoneItem,
             shortcutItem,
             modeItem,
             hintItem,
             statusItemLine,
+            strategyItem,
             errorItem,
             .separator(),
             launchAtLoginItem,
@@ -103,10 +109,12 @@ final class StatusBarController: NSObject {
 
         toggleItem.title = appState.toggleMenuTitle
         toggleItem.isEnabled = appState.hotkeyMode == .toggle
+        summaryItem.title = appState.statusSummary
         microphoneItem.title = "Microphone: \(appState.currentDeviceName)"
         shortcutItem.title = "Hotkey: \(appState.shortcut.displayString)"
         modeItem.title = "Mode: \(appState.hotkeyMode.displayName)"
         statusItemLine.title = appState.statusLine
+        strategyItem.title = appState.strategyLine
 
         launchAtLoginItem.state = appState.launchAtLoginEnabled ? .on : .off
 

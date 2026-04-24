@@ -5,6 +5,7 @@ struct MuteControllerStateSnapshot: Sendable {
     let desiredMuteState: MuteState
     let appliedDeviceState: MuteState
     let observedInputDevice: ObservedInputDevice
+    let applyStrategy: MuteApplyStrategy
 }
 
 final class MicrophoneMuteController {
@@ -14,6 +15,7 @@ final class MicrophoneMuteController {
     private(set) var desiredMuteState: MuteState
     private(set) var appliedDeviceState: MuteState = .unmuted
     private(set) var observedInputDevice = ObservedInputDevice(id: nil, name: "Unknown Microphone")
+    private(set) var currentApplyStrategy: MuteApplyStrategy = .unsupported
     private(set) var strategyCache: [AudioDeviceID: MuteApplyStrategy] = [:]
     private(set) var previousInputVolumes: [AudioDeviceID: Float32] = [:]
 
@@ -21,7 +23,8 @@ final class MicrophoneMuteController {
         MuteControllerStateSnapshot(
             desiredMuteState: desiredMuteState,
             appliedDeviceState: appliedDeviceState,
-            observedInputDevice: observedInputDevice
+            observedInputDevice: observedInputDevice,
+            applyStrategy: currentApplyStrategy
         )
     }
 
@@ -70,6 +73,7 @@ final class MicrophoneMuteController {
         let strategy = strategy(for: deviceID)
         let observedMuted = try observedMutedState(for: deviceID, strategy: strategy)
 
+        currentApplyStrategy = strategy
         observedInputDevice = ObservedInputDevice(
             id: deviceID,
             name: audioHardware.deviceName(deviceID)
@@ -120,6 +124,7 @@ final class MicrophoneMuteController {
             try audioHardware.setInputVolume(deviceID, volume: 0)
         case .unmuted:
             guard let previousVolume = previousInputVolumes[deviceID] else {
+                try audioHardware.setInputVolume(deviceID, volume: 1)
                 return
             }
             try audioHardware.setInputVolume(deviceID, volume: previousVolume)

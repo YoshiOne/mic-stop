@@ -1,4 +1,5 @@
 @testable import MicStopApp
+import Carbon
 import Foundation
 import Testing
 
@@ -200,6 +201,43 @@ struct AppStateTests {
         #expect(appState.appliedDeviceState == .unmuted)
         #expect(context.audio.deviceMuteByDevice[202] == false)
         #expect(context.defaultsStore.loadDesiredMuteState() == .muted)
+    }
+
+    @Test
+    func statusSummaryNamesAppliedStateAndDevice() {
+        let context = makeContext(initialMuteState: .muted)
+        let appState = makeAppState(context: context)
+
+        #expect(appState.statusSummary == "Muted on Device 101")
+        #expect(appState.strategyLine == "Strategy: Device mute")
+    }
+
+    @Test
+    func shortcutValidationErrorIsDisplayedUntilValidShortcutIsSaved() throws {
+        let context = makeContext()
+        let appState = makeAppState(context: context)
+
+        appState.presentShortcutValidationError(AppShortcut.ValidationError.optionShiftOnly)
+        #expect(appState.shortcutRecorderError == "Option+Shift combinations are unreliable on macOS Sequoia. Add Command or Control.")
+
+        let shortcut = try AppShortcut(
+            keyCode: UInt32(kVK_ANSI_M),
+            modifiers: [.command, .option]
+        )
+        appState.updateShortcut(shortcut)
+
+        #expect(appState.shortcutRecorderError == nil)
+    }
+
+    @Test
+    func missingInputDeviceSurfacesReadableError() {
+        let context = makeContext()
+        context.audio.defaultInputDeviceError = AudioHardwareError.noInputDevice
+
+        let appState = makeAppState(context: context)
+
+        #expect(appState.lastError == "No input microphone is selected.")
+        #expect(appState.statusSummary == "Live on Unknown Microphone")
     }
 
     private func makeAppState(context: TestContext) -> AppState {
